@@ -289,7 +289,7 @@ def admin_login():
             return "<h3>Wrong password! <a href='/admin/login'>Try again</a></h3>"
     return """
 <html><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>body{font-family:Inter,Arial;background:#f6f7fb;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}.box{background:white;padding:35px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,0.1);width:90%;max-width:380px;text-align:center}input{padding:14px;width:90%;border:2px solid #ddd;border-radius:10px;margin:12px 0;font-size:16px}.btn{padding:14px 30px;background:#0040bf;color:white;border:none;border-radius:10px;font-weight:700;cursor:pointer;width:95%}</style>
-<div class="box"><h2>🔐 Admin Login</h2><p>OAU ExamBank</p><form method="POST"><input type="password" name="password" placeholder="Enter password" required><br><button class="btn">Login</button></form><p style="font-size:11px;color:#999;margin-top:15px">Password: Shegsmith1@1</p></div></html>
+<div class="box"><h2>🔐 Admin Login</h2><p>OAU ExamBank</p><form method="POST"><input type="password" name="password" placeholder="Enter password" required><br><button class="btn">Login</button></form></div></html>
 """
 
 @app.route('/admin')
