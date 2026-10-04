@@ -261,23 +261,23 @@ function payWithPaystack(){{
 def verify(ref):
     course_code = request.args.get('course','MTH101')
     email = request.args.get('email','')
-    course = COURSES.get(course_code, {{"name":"Course","price":500}})
+    course = COURSES.get(course_code, {"name":"Course","price":500})
     qs = QUESTIONS_DB.get(course_code, [])
-    headers = {{"Authorization": f"Bearer {{PAYSTACK_SECRET_KEY}}"}}
+    headers = {"Authorization": f"Bearer {PAYSTACK_SECRET_KEY}"}
     try:
-        r = requests.get(f"https://api.paystack.co/transaction/verify/{{ref}}", headers=headers, timeout=10)
-        status = r.json().get('data',{{}}).get('status')=='success'
+        r = requests.get(f"https://api.paystack.co/transaction/verify/{ref}", headers=headers, timeout=10)
+        status = r.json().get('data',{}).get('status')=='success'
     except:
         status = True
     if status:
-        PAID_USERS.append({{"email":email,"course":course_code,"ref":ref,"time":datetime.now().strftime("%Y-%m-%d %H:%M"),"amount":course['price']}})
+        PAID_USERS.append({"email":email,"course":course_code,"ref":ref,"time":datetime.now().strftime("%Y-%m-%d %H:%M"),"amount":course['price']})
         html = f"<html><head><meta name='viewport' content='width=device-width, initial-scale=1'><style>body{{font-family:Inter,Arial;background:#f6f7fb;padding:20px}}.box{{max-width:860px;margin:0 auto;background:white;padding:30px;border-radius:20px}}.success{{background:linear-gradient(135deg,#00b96a,#00d97a);color:white;padding:24px;border-radius:16px;text-align:center}}.q{{background:#f9fafb;padding:18px;margin:14px 0;border-radius:14px;border-left:5px solid #00b96a}}</style><div class='box'><div class='success'><h2>✅ Payment Successful!</h2><p>{course_code} Unlocked<br>Ref: {{ref}}<br>{{email}}</p></div><h3>{course_code} - All {{len(qs)}} Questions</h3>"
         for i,q in enumerate(qs):
-            html+=f"<div class='q'><b>Q{{i+1}} [{{q['year']}}]: {{q['q']}}</b><br><span style='color:#065f46;font-weight:700'>✅ {{q['a']}}</span><br><small>💡 {{q['work']}}</small></div>"
+            html+=f"<div class='q'><b>Q{i+1} [{{q['year']}}]: {q['q']}</b><br><span style='color:#065f46;font-weight:700'>✅ {q['a']}</span><br><small>💡 {{q['work']}}</small></div>"
         html+=f"<div style='text-align:center;margin-top:28px'><a href='/'>Home</a></div></div></html>"
         return html
     else:
-        return f"Payment failed for {{ref}}"
+        return f"Payment failed for {ref}"
 
 @app.route('/admin/login', methods=['GET','POST'])
 def admin_login():
