@@ -156,6 +156,7 @@ QUESTIONS_DB = {
         {"q": "Mean dev 10,20,30?", "a": "6.67", "year": "2022", "work": "Mean20"},
         {"q": "Independent P(A and B)?", "a": "P(A)*P(B)", "year": "2023", "work": "Multiplication"},
         {"q": "Quartile divides into?", "a": "4 parts", "year": "2023", "work": "Q1 Q2 Q3"},
+    ],
      "MTH201": [
         {"q": "What is limit?", "a": "Value function approaches", "year": "2023", "work": "200L"},
     ],
