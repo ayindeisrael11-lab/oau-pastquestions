@@ -154,7 +154,6 @@ QUESTIONS_DB = {
         {"q": "Independent P(A and B)?", "a": "P(A)*P(B)", "year": "2023", "work": "Multiplication"},
         {"q": "Quartile divides into?", "a": "4 parts", "year": "2023", "work": "Q1 Q2 Q3"},
     ],
-}
     "POSTUTME": [
         {"q": "OAU motto?", "a": "For Learning and Culture", "year": "2023", "work": "Motto"},
         {"q": "Current VC OAU?", "a": "Prof. Adebayo Bamire", "year": "2023", "work": "2023/24"},
