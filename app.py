@@ -20,6 +20,7 @@ COURSES = {
     "STA101": {"name": "Elementary Statistics", "price": 400},
     "GST111": {"name": "Communication In English", "price": 800},
     "AMS101": {"name": "Principles Of Management", "price": 300},
+    "MTH201": {"name": "Mathemathics Method I - 200L", "dept": "200L Science", "price: 500}
     "POSTUTME": {"name": "OAU Post-UTME Pack", "price": 1500},
 }
 
@@ -155,6 +156,8 @@ QUESTIONS_DB = {
         {"q": "Mean dev 10,20,30?", "a": "6.67", "year": "2022", "work": "Mean20"},
         {"q": "Independent P(A and B)?", "a": "P(A)*P(B)", "year": "2023", "work": "Multiplication"},
         {"q": "Quartile divides into?", "a": "4 parts", "year": "2023", "work": "Q1 Q2 Q3"},
+            "MTH201": [
+        {"q": "What is limit?", "a": "Value function approaches", "year": "2023", "work": "200L"},
     ],
     "POSTUTME": [
         {"q": "OAU motto?", "a": "For Learning and Culture", "year": "2023", "work": "Motto"},
