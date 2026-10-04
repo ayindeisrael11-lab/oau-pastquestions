@@ -20,7 +20,7 @@ COURSES = {
     "STA101": {"name": "Elementary Statistics", "price": 400},
     "GST111": {"name": "Communication In English", "price": 800},
     "AMS101": {"name": "Principles Of Management", "price": 300},
-    "MTH201": {"name": "Mathemathics Method I - 200L", "dept": "200L Science", "price: 500}
+    "MTH201": {"name": "Mathemathics Method I - 200L", "dept": "200L Science", "price": 500}
     "POSTUTME": {"name": "OAU Post-UTME Pack", "price": 1500},
 }
 
