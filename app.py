@@ -18,7 +18,6 @@ COURSES = {
     "CSC101": {"name": "Introduction to Computing", "price": 500},
     "BIO101": {"name": "General Biology I", "price": 550},
     "STA101": {"name": "Elementary Statistics", "price": 400},
-    "GST111": {"name": "Communication In English", "price": 800},
     "POSTUTME": {"name": "OAU Post-UTME Pack", "price": 1500},
 }
 
