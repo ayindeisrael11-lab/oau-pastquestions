@@ -110,26 +110,37 @@ def course_page(code):
 
 @app.route('/admin', methods=['GET','POST'])
 def admin():
+    is_logged = request.args.get('logged') == '1'
     if request.method == 'POST':
-        if request.form.get('password') != ADMIN_PASSWORD:
-            return f"{BASE}<div class='container'><div class='card'><h3>❌ Wrong password! Your password is Shegsmith1@1</h3><a href='/admin'>Try again</a></div></div>"
-        course_code = request.form.get('course_code')
-        q = request.form.get('q'); a = request.form.get('a'); year = request.form.get('year','2023'); work = request.form.get('work','')
-        if course_code and q:
-            if course_code not in QUESTIONS_DB: QUESTIONS_DB[course_code]=[]
-            QUESTIONS_DB[course_code].append({"q":q,"a":a,"year":year,"work":work})
-            return f"{BASE}<div class='container'><div class='card'><h3>✅ Added to {course_code}!</h3><p>{q}</p><a href='/admin' class='btn' style='--c:#0B1D51'>Add More</a> <a href='/course/{course_code}' class='btn' style='--c:green'>View {course_code}</a></div></div>"
+        pwd = request.form.get('password')
+        is_add = request.form.get('course_code') is not None
+        if not is_add:
+            if pwd != ADMIN_PASSWORD:
+                return f"{BASE}<div class='container'><div class='card' style='max-width:400px;margin:50px auto;text-align:center'><h3>❌ Wrong Password</h3><a href='/admin' class='btn' style='--c:#0B1D51'>Try again</a></div></div>"
+            return redirect('/admin?logged=1')
+        else:
+            if pwd != ADMIN_PASSWORD:
+                return f"{BASE}<div class='container'><div class='card'><h3>❌ Access denied</h3><a href='/admin'>Login again</a></div></div>"
+            course_code = request.form.get('course_code')
+            q = request.form.get('q'); a = request.form.get('a'); year = request.form.get('year','2023'); work = request.form.get('work','')
+            if course_code and q:
+                if course_code not in QUESTIONS_DB: QUESTIONS_DB[course_code]=[]
+                QUESTIONS_DB[course_code].append({"q":q,"a":a,"year":year,"work":work})
+                return f"{BASE}<div class='container'><div class='card'><h3>✅ Added to {course_code}!</h3><p>{q}</p><a href='/admin?logged=1' class='btn' style='--c:#0B1D51'>Add More</a> <a href='/course/{course_code}' class='btn' style='--c:green'>View</a></div></div>"
+    if not is_logged:
+        return f"""{BASE}<div class='container'><div class='card' style='max-width:400px;margin:60px auto;text-align:center'>
+        <h2>🔒 Admin Login</h2><p style='color:#64748B;margin:10px 0'>Enter password to continue</p>
+        <form method='POST'><input name='password' type='password' placeholder='Enter admin password' required style='width:100%;padding:12px;border-radius:8px;border:1px solid #ccc'><br><br>
+        <button type='submit' style='width:100%;padding:12px;background:#0B1D51;color:white;border:none;border-radius:8px;font-weight:700'>Login</button></form>
+        <a href='/' style='display:inline-block;margin-top:15px'>← Home</a></div></div>"""
     opts = "".join([f"<option>{c}</option>" for c in COURSES_INFO.keys()])
-    return f"""{BASE}<div class='container'><div class='header'><h2>🔒 Admin Panel</h2><p>Password: Shegsmith1@1 | Add Questions</p></div>
+    return f"""{BASE}<div class='container'><div class='header'><h2>✅ Admin Panel - Add Questions</h2><p>Welcome Admin!</p></div>
     <div class='card' style='margin-top:20px;max-width:600px'>
-    <form method='POST'><label>Password</label><br><input name='password' type='password' required style='width:100%;padding:10px;margin:6px 0 14px 0;border-radius:8px;border:1px solid #ccc'><br>
-    <label>Course Code (Select as you wrote: MTH101/102)</label><br><select name='course_code' style='width:100%;padding:10px;margin:6px 0 14px 0;border-radius:8px;border:1px solid #ccc'>{opts}</select><br>
+    <form method='POST'><input name='password' type='hidden' value='{ADMIN_PASSWORD}'>
+    <label>Course Code</label><br><select name='course_code' style='width:100%;padding:10px;margin:6px 0 14px 0;border-radius:8px;border:1px solid #ccc'>{opts}</select><br>
     <label>Year</label><br><input name='year' value='2023' style='width:100%;padding:10px;margin:6px 0 14px 0;border-radius:8px;border:1px solid #ccc'><br>
     <label>Question</label><br><textarea name='q' required style='width:100%;padding:10px;margin:6px 0 14px 0;border-radius:8px;border:1px solid #ccc' rows='3'></textarea><br>
     <label>Answer</label><br><input name='a' required style='width:100%;padding:10px;margin:6px 0 14px 0;border-radius:8px;border:1px solid #ccc'><br>
-    <label>Working / Explanation</label><br><textarea name='work' style='width:100%;padding:10px;margin:6px 0 14px 0;border-radius:8px;border:1px solid #ccc' rows='3'></textarea><br>
-    <button type='submit' style='padding:12px 24px;background:#0B1D51;color:white;border:none;border-radius:8px;font-weight:700'>Add Question</button></form>
-    <a href='/' style='display:inline-block;margin-top:15px'>← Home</a></div></div>"""
-
-if __name__ == '__main__':
-    app.run()
+    <label>Working</label><br><textarea name='work' style='width:100%;padding:10px;margin:6px 0 14px 0;border-radius:8px;border:1px solid #ccc' rows='3'></textarea><br>
+    <button type='submit' style='padding:12px 24px;background:#0B1D51;color:white;border:none;border-radius:8px;font-weight:700'>Add Question</button>
+    </form><br><a href='/admin'>Logout</a> | <a href='/'>Home</a></div></div>"""
