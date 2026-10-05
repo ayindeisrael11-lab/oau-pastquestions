@@ -100,37 +100,31 @@ def course_page(code):
     if not info: return f"Course {code} not found <a href='/'>Go Home</a>"
     lvl = LEVELS.get(info['level'])
     
-    # Check if paid
     paid_courses = session.get('paid_courses', [])
     is_paid = code in paid_courses
     free_limit = 3
     
     h = f"{BASE}<div class='container'><div class='header' style='background:{lvl['color']}'><a href='/level/{info['level']}' style='color:white'>← Back</a><h2>{code}</h2><p>{info['name']}</p></div>"
-    h += f"<p style='margin:15px 0'><b>{len(qs)} Questions</b> | {free_limit} Free | {len(qs)-free_limit if len(qs)>free_limit else 0} Paid</p>"
+    h += f"<p style='margin:15px 0'><b>{len(qs)} Questions</b> | {free_limit} Free</p>"
 
     for i, q in enumerate(qs, 1):
         if i <= free_limit or is_paid:
             h += f"<div class='q'><span class='badge'>{q['year']}</span> Q{i}<p style='margin:10px 0;font-weight:600'>{q['q']}</p><b>Ans:</b> {q['a']}<details style='margin-top:10px'><summary>Show Working</summary><p>{q['work']}</p></details></div>"
         else:
-            # Locked card - show only once
-                        h += f"""
+            h += f"""
             <div style='background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%); padding:32px; border-radius:20px; text-align:center; margin-top:28px; border:2px dashed #FFB300; box-shadow: 0 8px 24px rgba(255,179,0,0.15);'>
                 <div style='font-size:40px; margin-bottom:8px'>🔒</div>
-                <h3 style='margin:0; font-size:20px; color:#6D4C00; font-weight:800'>Unlock All 20 - ₦500</h3>
-                <p style='margin:8px 0 20px 0; color:#8D6E00; font-size:14px'>All 20 verified + workings</p>
-                
-                <input type="email" id="pay-email" value="ayindeisrael11@gmail.com" placeholder="your email" style="width:100%; max-width:320px; padding:14px 18px; border:2px solid #FFE082; border-radius:12px; font-size:14px; outline:none; text-align:center; margin-bottom:16px; background:white">
+                <h3 style='margin:0; font-size:20px; color:#6D4C00; font-weight:800'>Unlock All {len(qs)} - ₦500</h3>
+                <p style='margin:8px 0 20px 0; color:#8D6E00; font-size:14px'>All {len(qs)} verified + workings</p>
+                <input type="email" id="pay-email" value="ayindeisrael11@gmail.com" style="width:100%; max-width:320px; padding:14px 18px; border:2px solid #FFE082; border-radius:12px; font-size:14px; outline:none; text-align:center; margin-bottom:16px; background:white">
                 <br>
-                <button onclick="payWithPaystack()" style="padding:14px 28px; background: linear-gradient(135deg, #0B8A5B 0%, #0AA06E 100%); color:white; border:none; border-radius:14px; font-weight:800; cursor:pointer; font-size:15px; box-shadow: 0 6px 16px rgba(10,160,110,0.3); display:inline-flex; align-items:center; gap:8px;">
-                    <span style="background:#FFC107; padding:2px 6px; border-radius:4px; font-size:12px">💳</span> Pay ₦500
-                </button>
+                <button onclick="payWithPaystack()" style="padding:14px 28px; background: linear-gradient(135deg, #0B8A5B 0%, #0AA06E 100%); color:white; border:none; border-radius:14px; font-weight:800; cursor:pointer; font-size:15px; box-shadow: 0 6px 16px rgba(10,160,110,0.3);">💳 Pay ₦500</button>
                 <p style='margin-top:14px; font-size:11px; color:#A68A00'>🔒 Secured by Paystack • Test: 4084 0840 8408 4081</p>
             </div>
             <script src="https://js.paystack.co/v1/inline.js"></script>
             <script>
             function payWithPaystack(){{
               var email = document.getElementById('pay-email').value;
-              if(!email){{ alert('Abeg put email'); return; }}
               var handler = PaystackPop.setup({{
                 key: '{PAYSTACK_PUBLIC_KEY}',
                 email: email,
@@ -140,17 +134,18 @@ def course_page(code):
                 callback: function(response){{
                   window.location.href = '/verify-payment/{code}/' + response.reference;
                 }},
-                onClose: function(){{ }}
+                onClose: function(){{}}
               }});
               handler.openIframe();
             }}
             </script>
             """
+            break
 
     if qs:
-        h += f"<div style='background:white;padding:24px;border-radius:14px;text-align:center;margin-top:20px'><h3>Download {code} PDF</h3><p>Get all questions offline</p></div>"
+        h += f"<div style='background:white;padding:24px;border-radius:14px;text-align:center;margin-top:20px'><h3>Download {code} PDF</h3></div>"
     else:
-        h += f"<div style='background:white;padding:30px;text-align:center;border-radius:14px;margin-top:20px'><h3>📚 {code} - No questions yet</h3><p>Admin need to add questions</p></div>"
+        h += f"<div style='background:white;padding:30px;text-align:center;border-radius:14px;margin-top:20px'><h3>📚 {code} - No questions yet</h3></div>"
     
     h += "</div>"
     return h
