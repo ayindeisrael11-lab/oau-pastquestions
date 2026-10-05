@@ -1,7 +1,8 @@
-from flask import Flask, render_template_string, request, redirect
+from flask import Flask, render_template_string, request, redirect, session
 import os
 
 app = Flask(__name__)
+app.secret_key = "oau_secret_123"
 
 PAYSTACK_PUBLIC_KEY = os.environ.get("PAYSTACK_PUBLIC_KEY", "pk_test_YOUR_KEY_HERE")
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "Shegsmith1@1")
@@ -98,15 +99,62 @@ def course_page(code):
     info = COURSES_INFO.get(code)
     if not info: return f"Course {code} not found <a href='/'>Go Home</a>"
     lvl = LEVELS.get(info['level'])
-    h = f"{BASE}<div class='container'><div class='header' style='background:{lvl['color']}'><a href='/level/{info['level']}' style='color:white'>← {info['level']}</a> | <a href='/' style='color:white'>Home</a><h2 style='margin-top:10px'>{code} - {info['name']}</h2><p>{len(qs)} Past Questions Available</p></div>"
+    
+    # Check if paid
+    paid_courses = session.get('paid_courses', [])
+    is_paid = code in paid_courses
+    free_limit = 3
+    
+    h = f"{BASE}<div class='container'><div class='header' style='background:{lvl['color']}'><a href='/level/{info['level']}' style='color:white'>← Back</a><h2>{code}</h2><p>{info['name']}</p></div>"
+    h += f"<p style='margin:15px 0'><b>{len(qs)} Questions</b> | {free_limit} Free | {len(qs)-free_limit if len(qs)>free_limit else 0} Paid</p>"
+
     for i, q in enumerate(qs, 1):
-        h += f"<div class='q'><span class='badge'>{q['year']}</span> Q{i}<p style='margin:10px 0;font-weight:600'>{q['q']}</p><details><summary style='cursor:pointer;color:#0B1D51;font-weight:700'>Show Answer & Working</summary><div style='background:#F0FDF4;padding:12px;border-radius:8px;margin-top:8px'><b>Ans: {q['a']}</b><br><br>{q['work']}</div></details></div>"
+        if i <= free_limit or is_paid:
+            h += f"<div class='q'><span class='badge'>{q['year']}</span> Q{i}<p style='margin:10px 0;font-weight:600'>{q['q']}</p><b>Ans:</b> {q['a']}<details style='margin-top:10px'><summary>Show Working</summary><p>{q['work']}</p></details></div>"
+        else:
+            # Locked card - show only once
+            h += f"""
+            <div style='background:#FFF3CD;padding:30px;border-radius:14px;text-align:center;margin-top:20px;border:2px dashed #FFC107'>
+                <h3>🔒 {len(qs)-free_limit} More Questions Locked</h3>
+                <p>Pay ₦500 to unlock all {len(qs)} questions for {code}</p>
+                <button onclick="payWithPaystack()" style="padding:14px 28px;background:#0AA06E;color:white;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:16px">Pay ₦500 to Unlock</button>
+            </div>
+            <script src="https://js.paystack.co/v1/inline.js"></script>
+            <script>
+            function payWithPaystack(){{
+              var handler = PaystackPop.setup({{
+                key: '{PAYSTACK_PUBLIC_KEY}',
+                email: 'student@oau.com',
+                amount: 50000,
+                currency: 'NGN',
+                ref: 'OAU_'+Math.floor((Math.random() * 1000000000) + 1),
+                callback: function(response){{
+                  window.location.href = '/verify-payment/{code}/' + response.reference;
+                }},
+                onClose: function(){{ alert('Payment cancelled'); }}
+              }});
+              handler.openIframe();
+            }}
+            </script>
+            """
+            break
+
     if qs:
-        h += f"<div style='background:white;padding:24px;border-radius:14px;text-align:center;margin-top:20px'><h3>Download Full {code} PDF (100+ Qs)</h3><button onclick=\"payWithPaystack()\" style='padding:14px 28px;background:#22C55E;color:white;border:none;border-radius:10px;font-weight:700;margin-top:10px;cursor:pointer'>Pay ₦500 with Paystack</button><script>function payWithPaystack(){{var handler=PaystackPop.setup({{key:'{PAYSTACK_PUBLIC_KEY}',email:'student@oau.com',amount:50000,currency:'NGN',ref:'OAU_'+Math.floor(Math.random()*1000000000),callback:function(r){{alert('Payment successful! Ref: '+r.reference)}},onClose:function(){{alert('Closed')}}}});handler.openIframe();}}</script></div>"
+        h += f"<div style='background:white;padding:24px;border-radius:14px;text-align:center;margin-top:20px'><h3>Download {code} PDF</h3><p>Get all questions offline</p></div>"
     else:
-        h += f"<div style='background:white;padding:30px;text-align:center;border-radius:14px;margin-top:20px'><h3>📚 {code} Questions Loading</h3><p style='color:#64748B'>We are uploading original questions for {code}. Check back or contact admin.</p></div>"
+        h += f"<div style='background:white;padding:30px;text-align:center;border-radius:14px;margin-top:20px'><h3>📚 {code} - No questions yet</h3><p>Admin need to add questions</p></div>"
+    
     h += "</div>"
     return h
+
+@app.route('/verify-payment/<path:code>/<ref>')
+def verify_payment(code, ref):
+    if 'paid_courses' not in session:
+        session['paid_courses'] = []
+    if code not in session['paid_courses']:
+        session['paid_courses'].append(code)
+        session.modified = True
+    return f"{BASE}<div class='container'><div style='background:white;padding:40px;border-radius:14px;text-align:center;margin-top:40px'><h2>✅ Payment Successful!</h2><p>You don unlock {code}</p><a href='/course/{code}' style='display:inline-block;margin-top:20px;padding:12px 24px;background:#0B1D51;color:white;border-radius:8px;text-decoration:none'>View All Questions Now</a></div></div>"
 
 @app.route('/admin', methods=['GET','POST'])
 def admin():
