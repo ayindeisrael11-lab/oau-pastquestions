@@ -113,31 +113,39 @@ def course_page(code):
             h += f"<div class='q'><span class='badge'>{q['year']}</span> Q{i}<p style='margin:10px 0;font-weight:600'>{q['q']}</p><b>Ans:</b> {q['a']}<details style='margin-top:10px'><summary>Show Working</summary><p>{q['work']}</p></details></div>"
         else:
             # Locked card - show only once
-            h += f"""
-            <div style='background:#FFF3CD;padding:30px;border-radius:14px;text-align:center;margin-top:20px;border:2px dashed #FFC107'>
-                <h3>🔒 {len(qs)-free_limit} More Questions Locked</h3>
-                <p>Pay ₦500 to unlock all {len(qs)} questions for {code}</p>
-                <button onclick="payWithPaystack()" style="padding:14px 28px;background:#0AA06E;color:white;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:16px">Pay ₦500 to Unlock</button>
+                        h += f"""
+            <div style='background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%); padding:32px; border-radius:20px; text-align:center; margin-top:28px; border:2px dashed #FFB300; box-shadow: 0 8px 24px rgba(255,179,0,0.15);'>
+                <div style='font-size:40px; margin-bottom:8px'>🔒</div>
+                <h3 style='margin:0; font-size:20px; color:#6D4C00; font-weight:800'>Unlock All 20 - ₦500</h3>
+                <p style='margin:8px 0 20px 0; color:#8D6E00; font-size:14px'>All 20 verified + workings</p>
+                
+                <input type="email" id="pay-email" value="ayindeisrael11@gmail.com" placeholder="your email" style="width:100%; max-width:320px; padding:14px 18px; border:2px solid #FFE082; border-radius:12px; font-size:14px; outline:none; text-align:center; margin-bottom:16px; background:white">
+                <br>
+                <button onclick="payWithPaystack()" style="padding:14px 28px; background: linear-gradient(135deg, #0B8A5B 0%, #0AA06E 100%); color:white; border:none; border-radius:14px; font-weight:800; cursor:pointer; font-size:15px; box-shadow: 0 6px 16px rgba(10,160,110,0.3); display:inline-flex; align-items:center; gap:8px;">
+                    <span style="background:#FFC107; padding:2px 6px; border-radius:4px; font-size:12px">💳</span> Pay ₦500
+                </button>
+                <p style='margin-top:14px; font-size:11px; color:#A68A00'>🔒 Secured by Paystack • Test: 4084 0840 8408 4081</p>
             </div>
             <script src="https://js.paystack.co/v1/inline.js"></script>
             <script>
             function payWithPaystack(){{
+              var email = document.getElementById('pay-email').value;
+              if(!email){{ alert('Abeg put email'); return; }}
               var handler = PaystackPop.setup({{
                 key: '{PAYSTACK_PUBLIC_KEY}',
-                email: 'student@oau.com',
+                email: email,
                 amount: 50000,
                 currency: 'NGN',
                 ref: 'OAU_'+Math.floor((Math.random() * 1000000000) + 1),
                 callback: function(response){{
                   window.location.href = '/verify-payment/{code}/' + response.reference;
                 }},
-                onClose: function(){{ alert('Payment cancelled'); }}
+                onClose: function(){{ }}
               }});
               handler.openIframe();
             }}
             </script>
             """
-            break
 
     if qs:
         h += f"<div style='background:white;padding:24px;border-radius:14px;text-align:center;margin-top:20px'><h3>Download {code} PDF</h3><p>Get all questions offline</p></div>"
