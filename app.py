@@ -114,11 +114,11 @@ def course_page(code):
             h += f"""
             <div style='background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%); padding:32px; border-radius:20px; text-align:center; margin-top:28px; border:2px dashed #FFB300; box-shadow: 0 8px 24px rgba(255,179,0,0.15);'>
                 <div style='font-size:40px; margin-bottom:8px'>🔒</div>
-                <h3 style='margin:0; font-size:20px; color:#6D4C00; font-weight:800'>Unlock All {len(qs)} - ₦500</h3>
+                <h3 style='margin:0; font-size:20px; color:#6D4C00; font-weight:800'>Unlock All {len(qs)} - ₦100,200</h3>
                 <p style='margin:8px 0 20px 0; color:#8D6E00; font-size:14px'>All {len(qs)} verified + workings</p>
                 <input type="email" id="pay-email" value="ayindeisrael11@gmail.com" style="width:100%; max-width:320px; padding:14px 18px; border:2px solid #FFE082; border-radius:12px; font-size:14px; outline:none; text-align:center; margin-bottom:16px; background:white">
                 <br>
-                <button onclick="payWithPaystack()" style="padding:14px 28px; background: linear-gradient(135deg, #0B8A5B 0%, #0AA06E 100%); color:white; border:none; border-radius:14px; font-weight:800; cursor:pointer; font-size:15px; box-shadow: 0 6px 16px rgba(10,160,110,0.3);">💳 Pay ₦500</button>
+                <button onclick="payWithPaystack()" style="padding:14px 28px; background: linear-gradient(135deg, #0B8A5B 0%, #0AA06E 100%); color:white; border:none; border-radius:14px; font-weight:800; cursor:pointer; font-size:15px; box-shadow: 0 6px 16px rgba(10,160,110,0.3);">💳 Pay ₦100,200</button>
                 <p style='margin-top:14px; font-size:11px; color:#A68A00'>🔒 Secured by Paystack • Test: 4084 0840 8408 4081</p>
             </div>
             <script src="https://js.paystack.co/v1/inline.js"></script>
@@ -128,7 +128,7 @@ def course_page(code):
               var handler = PaystackPop.setup({{
                 key: '{PAYSTACK_PUBLIC_KEY}',
                 email: email,
-                amount: 50000,
+                amount: 10020000,
                 currency: 'NGN',
                 ref: 'OAU_'+Math.floor((Math.random() * 1000000000) + 1),
                 callback: function(response){{
