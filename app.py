@@ -12,7 +12,7 @@ COURSES_INFO = {
     "MTH101/102": {"name": "Elementary Mathematics", "level": "100L", "faculty": "Science"},
     "PHY101/102": {"name": "General Physics", "level": "100L", "faculty": "Science"},
     "CHM101/102": {"name": "Introduction to Chemistry", "level": "100L", "faculty": "Science"},
-    "CSC101": {"name": "Introduction to Computer Science", "level": "100L", "faculty": "Technology"},
+    "CSC101/102": {"name": "Introduction to Computer Science", "level": "100L", "faculty": "Technology"},
     "BOT101/102": {"name": "Introductory Botany", "level": "100L", "faculty": "Science"},
     "ZOO101/102": {"name": "Introductory Zoology", "level": "100L", "faculty": "Science"},
     "PHY105/106": {"name": "Physics for Biological Science", "level": "100L", "faculty": "Science"},
