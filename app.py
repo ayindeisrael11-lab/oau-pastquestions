@@ -46,9 +46,9 @@ QUESTIONS_DB = {
         {"q": "A population of 5 scores: 2,4,4,4,5,6 is a SAMPLE of 5 score: 2,4,4,4,5. calculate sample mean and population mean difference?", "a": "$\bar{x} = 3.8$,$\mu = 4.17$", "year": "2023", "work": "25/6 = 4.17$"},
     ],
     "CSC101/102": [
-        {"q": "what is computer? And what are the 2 main parts?", "a": "computer ia an electronic device that processes data to give information. 2 main parts are hardware and software", "year": "2026", "work": "Hardware = you can touch it (keyboard, mouse). Software = you cannot touch it(windows,MS Word).},
+        {"q": "what is computer? And what are the 2 main parts?", "a": "computer ia an electronic device that processes data to give information. 2 main parts are hardware and software", "year": "2026", "work": "Hardware = you can touch it (keyboard, mouse). Software = you cannot touch it(windows,MS Word)."},
         {"q": "Convert binary 1011 to Decimal", "a": "11", "year": "2026", "work": "11"},
-        {"q": "what is the difference between system software and application software? give 2 examples each", "a": "system software controls the computer itself, application software does user work.", "year": "2026", "work": system software e.g windows 10, linux. Application software e.g MS Word, VLC, Chrome},
+        {"q": "what is the difference between system software and application software? give 2 examples each", "a": "system software controls the computer itself, application software does user work.", "year": "2026", "work": "system software e.g windows 10, linux. Application software e.g MS Word, VLC, Chrome"},
         {"q": "Define Algorithm and Flowchart. Which Symbol is used for Decision?", "a": "Algorithm is step by step procedure to solve problem. Flowchart is diagram representation of algorithm. Decision symbol is Diamond", "year": " 2026", "work": "for flowchart: oval=Start/Stop, Rectangle = Process, Diamond = Decision/Question (Yes/No), Parallelogram = imput/Output."},
         {"q": "What ia the full meaning of CPU and what are its 3 main units?", "a": "Central Processing Unit. 3 units are ALU, CU,and Registral/Memory Unit.", "year": "2026", "work": "ALU = Arithmeric Logic Unit (does calculation), CU = control unit, Rgisters = small fast storage inside CPU"},
     ],
