@@ -43,7 +43,7 @@ COURSES_INFO = {
 QUESTIONS_DB = {
     "MTH101/102": [
         {"q": "What is mean symbol for sample vs population?", "a": "x-bar for sample, μ for population", "year": "2023", "work": "Sample mean = x̄, Population = μ - You go see am for MTH101/102 exam"},
-        {"q": "A population of 5 scores: 2,4,4,4,5,6 is a SAMPLE of 5 score: 2,4,4,4,5. calculate sample mean and population mean difference?", "a": "$\bar{x} = 3.8$,$\mu = 4.17$", "work": "25/6 = 4.17$"},
+        {"q": "A population of 5 scores: 2,4,4,4,5,6 is a SAMPLE of 5 score: 2,4,4,4,5. calculate sample mean and population mean difference?", "a": "$\bar{x} = 3.8$,$\mu = 4.17$", "year": "2023", "work": "25/6 = 4.17$"},
     ],
     "POSTUTME": [
         {"q": "What is OAU motto?", "a": "For Learning and Culture", "year": "2023", "work": "Official motto"},
